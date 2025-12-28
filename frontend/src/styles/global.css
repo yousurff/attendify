@@ -1,0 +1,315 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* --- CYBERPUNK / AI PALETİ --- */
+  --ai-darkest: #112235;  /* En koyu arka plan (Body) */
+  --ai-dark:    #0d4a6b;  /* Kartlar ve Paneller */
+  --ai-mid:     #0984ae;  /* Kenarlıklar ve Ara tonlar */
+  --ai-blue:    #03c9f8;  /* Ana Butonlar ve Vurgular */
+  --ai-cyan:    #0ffff8;  /* Parlayan Metinler */
+
+  /* Global Değişken Eşleştirmeleri */
+  --color-primary: var(--ai-mid);
+  --color-secondary: var(--ai-blue);
+  --color-tertiary: var(--ai-dark);
+  --color-accent: var(--ai-cyan);
+  --color-light: #cbd5e1;
+  --color-white: #ffffff;
+  
+  --text-main: #ffffff;
+  --text-muted: #cbd5e1;
+  --border-neon: 1px solid var(--ai-mid);
+  
+  --sidebar-width: 250px;
+  --header-height: 70px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--ai-darkest); /* SAYFA ARKA PLANI: EN KOYU */
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ai-darkest);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ai-mid);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ai-blue);
+}
+
+/* --- KART STİLLERİ (BEYAZ KUTULARI DÜZELTEN KISIM) --- */
+.card {
+  background-color: var(--ai-dark); /* BEYAZ YERİNE KOYU LACİVERT */
+  border: var(--border-neon);       /* NEON KENARLIK */
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  color: var(--text-main);
+  margin-bottom: 24px; /* Kartlar arası boşluk */
+}
+
+.card:hover {
+  box-shadow: 0 0 15px rgba(3, 201, 248, 0.15); /* Hafif neon parlama */
+  border-color: var(--ai-blue);
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ai-cyan); /* Başlıklar Neon Mavi */
+  margin-bottom: 16px;
+  text-shadow: 0 0 10px rgba(3, 201, 248, 0.3);
+}
+
+/* --- TABLO STİLLERİ --- */
+.table-container {
+  overflow-x: auto;
+  margin-top: 0;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--ai-dark); /* Tablo zemini koyu */
+  color: var(--text-main);
+}
+
+thead {
+  background: linear-gradient(90deg, var(--ai-darkest), var(--ai-dark));
+  border-bottom: 2px solid var(--ai-mid);
+}
+
+th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ai-cyan);
+}
+
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+}
+
+/* Satır Hover Efekti: Hafif Mavi */
+tr:hover {
+  background-color: rgba(3, 201, 248, 0.05); 
+}
+
+/* --- INPUT VE FORM ELEMANLARI (BEYAZ GİRİŞLERİ DÜZELTEN KISIM) --- */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ai-cyan);
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--ai-mid);
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  
+  /* Koyu Zemin, Beyaz Yazı */
+  background-color: var(--ai-darkest); 
+  color: #ffffff;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  outline: none;
+  border-color: var(--ai-cyan);
+  box-shadow: 0 0 10px rgba(3, 201, 248, 0.3);
+}
+
+.input-group input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --- BUTONLAR --- */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--ai-mid), var(--ai-blue));
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(3, 201, 248, 0.3);
+}
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(3, 201, 248, 0.5);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--ai-mid);
+  color: var(--ai-cyan);
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: rgba(3, 201, 248, 0.1);
+}
+
+.btn-danger {
+  background-color: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
+  border: 1px solid #ff4d4d;
+}
+.btn-danger:hover:not(:disabled) {
+  background-color: #ff4d4d;
+  color: #fff;
+}
+
+.btn-success {
+  background-color: rgba(15, 255, 248, 0.1);
+  color: var(--ai-cyan);
+  border: 1px solid var(--ai-cyan);
+}
+.btn-success:hover:not(:disabled) {
+  background-color: var(--ai-cyan);
+  color: var(--ai-darkest);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--ai-mid);
+  color: var(--text-muted);
+}
+.btn-outline:hover {
+  border-color: var(--ai-cyan);
+  color: var(--ai-cyan);
+}
+
+/* --- MODAL --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(17, 34, 53, 0.85); /* Koyu perde */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background-color: var(--ai-dark);
+  border: 1px solid var(--ai-mid);
+  box-shadow: 0 0 40px rgba(3, 201, 248, 0.2);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  color: var(--text-main);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* --- DİĞER YARDIMCILAR --- */
+.text-center { text-align: center; }
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 16px; }
+.flex { display: flex; }
+.gap-2 { gap: 8px; }
+.w-full { width: 100%; }
+
+.spinner {
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top: 3px solid var(--ai-cyan);
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- HEADER (SAYFA BAŞLIĞI) DÜZELTMESİ --- */
+
+/* Hem 'header' etiketini hem de '.header' sınıfını hedefler */
+header, .header {
+  background-color: var(--ai-dark) !important; /* Beyazı ezmek için !important */
+  border-bottom: 1px solid var(--ai-mid) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Başlık Yazısı (Örn: "Öğrenci Yönetimi") */
+header h1, .header h1, 
+header h2, .header h2 {
+  color: var(--ai-cyan) !important;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(3, 201, 248, 0.3); /* Neon Parlama */
+}
+
+/* Sağ taraftaki Kullanıcı Bilgisi Alanı */
+header .user-info, .header .user-info {
+  color: #fff !important;
+}
+
+header .user-name, .header .user-name {
+  color: #fff !important;
+  font-weight: 600;
+}
+
+header .user-role, .header .user-role {
+  color: var(--ai-blue) !important; /* "System Admin" yazısı mavi olsun */
+  font-size: 0.85rem;
+  font-weight: 500;
+}

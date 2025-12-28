@@ -1,0 +1,31 @@
+.teacher-layout {
+  display: flex;
+  min-height: 100vh;
+  /* Admin Paneliyle aynı koyu arka plan */
+  background-color: #0f172a; 
+}
+
+.teacher-content {
+  flex: 1;
+  padding: 32px;
+  transition: margin-left 0.3s ease;
+  width: 100%;
+}
+
+/* Sidebar Açıkken */
+.teacher-content.sidebar-open {
+  margin-left: 260px; /* Sidebar açık genişliği */
+}
+
+/* Sidebar Kapalıyken */
+.teacher-content.sidebar-closed {
+  margin-left: 70px; /* Sidebar kapalı genişliği */
+}
+
+@media (max-width: 768px) {
+  .teacher-content.sidebar-open,
+  .teacher-content.sidebar-closed {
+    margin-left: 0;
+    padding: 20px;
+  }
+}

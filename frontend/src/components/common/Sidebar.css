@@ -1,0 +1,180 @@
+/* frontend/src/components/common/Sidebar.css */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  /* YENİ: Koyu Lacivert Gradient */
+  background: linear-gradient(180deg, var(--ai-darkest) 0%, var(--ai-dark) 100%);
+  border-right: 1px solid var(--ai-mid); /* Neon sağ kenarlık */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  z-index: 100;
+  box-shadow: 2px 0 20px rgba(3, 201, 248, 0.1); /* Hafif mavi gölge */
+  overflow-x: hidden;
+}
+
+/* AÇIK DURUM */
+.sidebar.open {
+  width: var(--sidebar-width-open); /* 260px */
+}
+
+/* KAPALI (MİNİ) DURUM */
+.sidebar.closed {
+  width: var(--sidebar-width-closed); /* 70px */
+}
+
+.sidebar-header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  border-bottom: 1px solid var(--ai-mid); /* Alt çizgi neon */
+}
+
+/* Toggle (3 Çizgi) Butonu */
+.menu-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--ai-cyan); /* İkon rengi */
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.menu-toggle-btn:hover {
+  background-color: rgba(3, 201, 248, 0.1); /* Hover arkası */
+  box-shadow: 0 0 10px var(--ai-blue); /* Hafif parlama */
+}
+
+.sidebar-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ai-cyan); /* Başlık rengi */
+  margin-left: 15px;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.2s;
+  text-shadow: 0 0 8px rgba(3, 201, 248, 0.4); /* Yazı parlaması */
+}
+
+.sidebar-title.hidden {
+  opacity: 0;
+  width: 0;
+  display: none;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  color: var(--text-muted); /* Pasif renk: soluk */
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+
+/* Kapalıyken ikonları ortalamak için */
+.sidebar.closed .sidebar-item {
+  padding: 14px 0;
+  justify-content: center;
+}
+
+.sidebar-item:hover {
+  background-color: rgba(3, 201, 248, 0.1); /* Hover rengi */
+  color: var(--ai-cyan);
+}
+
+.sidebar-item.active {
+  background-color: rgba(3, 201, 248, 0.15); /* Aktif arka plan */
+  border-left-color: var(--ai-cyan); /* Sol çizgi */
+  color: var(--ai-cyan); /* Aktif yazı */
+  font-weight: 600;
+  box-shadow: inset 10px 0 20px -10px rgba(3, 201, 248, 0.3); /* İç parlama */
+}
+
+.sidebar-icon {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+}
+
+.sidebar-label {
+  font-size: 15px;
+  margin-left: 15px;
+  transition: opacity 0.2s;
+}
+
+.sidebar-label.hidden {
+  display: none;
+}
+
+.sidebar-logout {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(3, 201, 248, 0.2); /* Üst çizgi */
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.3s;
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.sidebar.closed .sidebar-logout {
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.sidebar-logout:hover {
+  background-color: rgba(255, 77, 77, 0.1); /* Kırmızımsı hover */
+  color: #ff4d4d;
+}
+
+/* MOBİL İÇİN AYARLAR */
+.sidebar-overlay-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar.closed {
+    transform: translateX(-100%);
+    width: 260px;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+    width: 260px;
+  }
+
+  .sidebar-overlay-mobile {
+    display: block;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7); /* Arkası daha koyu */
+    z-index: 99;
+    backdrop-filter: blur(2px);
+  }
+}

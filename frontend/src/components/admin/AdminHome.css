@@ -1,0 +1,482 @@
+/* frontend/src/components/admin/AdminHome.css */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin: 32px 0;
+}
+
+/* KARTLARIN TEMELİ (KOYU TEMA) */
+.stat-card {
+  background-color: var(--ai-dark); /* Koyu Lacivert */
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--ai-mid); /* Neon Kenarlık */
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 15px rgba(3, 201, 248, 0.2); /* Neon Parlama */
+  border-color: var(--ai-cyan);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  background-color: rgba(3, 201, 248, 0.1) !important; /* İkon arkası koyu/şeffaf */
+  color: var(--ai-cyan) !important;
+  border: 1px solid var(--ai-mid);
+}
+
+.stat-content h3 {
+  font-size: 14px;
+  color: var(--ai-blue);
+  margin-bottom: 8px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.chart-card, .feedback-card {
+  padding: 32px;
+  background-color: var(--ai-dark); /* Koyu Kart */
+  border-radius: 12px;
+  border: 1px solid var(--ai-mid);
+  color: #fff;
+}
+
+.feedback-card {
+  padding: 24px;
+  height: 500px; /* Sabit yükseklik */
+  display: flex;
+  flex-direction: column;
+}
+
+/* YENİ LİSTE TASARIMI (KOYU) */
+.feedback-list-container {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 15px;
+  padding-right: 5px; /* Scrollbar için pay */
+}
+
+.feedback-list-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+  background-color: rgba(17, 34, 53, 0.3); /* Liste elemanı koyu */
+}
+
+.feedback-list-item:hover {
+  background-color: rgba(3, 201, 248, 0.1); /* Hoverda hafif neon */
+}
+
+.filter-buttons {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.2); /* Buton grubu zemini koyu */
+  padding: 4px;
+  border-radius: 8px;
+  gap: 4px;
+  border: 1px solid var(--ai-mid);
+}
+
+.feedback-icon {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(3, 201, 248, 0.1) !important;
+  color: var(--ai-cyan) !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-right: 15px;
+  flex-shrink: 0;
+  border: 1px solid var(--ai-mid);
+}
+
+.feedback-info {
+  flex: 1;
+}
+
+.feedback-subject-line {
+  font-weight: 600;
+  color: #fff; /* Başlık beyaz */
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.feedback-meta {
+  font-size: 0.85rem;
+  color: #cbd5e1; /* Detaylar gri */
+  display: flex;
+  align-items: center;
+}
+
+.feedback-sender {
+  font-weight: 500;
+  color: var(--ai-blue);
+}
+
+.feedback-dot {
+  margin: 0 6px;
+  font-size: 0.6rem;
+  color: #cbd5e1;
+}
+
+.click-hint {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.no-data {
+  text-align: center;
+  color: #cbd5e1;
+  padding: 40px 20px;
+  font-style: italic;
+}
+
+/* MODAL STİLLERİ (KOYU) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(17, 34, 53, 0.85); /* Arka plan koyu perde */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content.feedback-modal {
+  background: var(--ai-dark);
+  padding: 0;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: modalSlideIn 0.3s ease-out;
+  border: 1px solid var(--ai-mid);
+  color: #fff;
+}
+
+@keyframes modalSlideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--ai-mid);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ai-cyan);
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.detail-row label {
+  width: 100px;
+  color: var(--ai-cyan);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-row .icon {
+  font-size: 16px;
+}
+
+.detail-value {
+  flex: 1;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.detail-email {
+  color: #94a3b8;
+  font-weight: 400;
+  font-size: 0.85rem;
+  margin-left: 6px;
+}
+
+.highlight {
+  color: var(--ai-blue);
+  font-weight: 600;
+}
+
+.message-box {
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--ai-mid);
+}
+
+.message-box label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ai-blue);
+  margin-bottom: 8px;
+}
+
+.message-box p {
+  color: #cbd5e1;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  white-space: pre-wrap; /* Satır başlarını koru */
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--ai-mid);
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 12px 12px;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Başlık ve Butonları yan yana getiren yapı */
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--ai-mid);
+  padding-bottom: 15px;
+}
+
+.card-title {
+  margin: 0;
+  color: var(--ai-cyan) !important;
+}
+
+/* Tekil Filtre Butonu */
+.filter-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  color: var(--ai-cyan);
+}
+
+/* Aktif Buton Stili */
+.filter-btn.active {
+  background-color: var(--ai-mid);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(3, 201, 248, 0.3);
+  font-weight: 600;
+}
+
+/* Okundu Rozeti (Listede) */
+.read-badge {
+  font-size: 0.7rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* --- MEVCUT CSS DOSYASININ EN ALTINA EKLEYİN --- */
+
+/* MASTER CALENDAR STİLLERİ */
+.master-calendar-wrapper {
+  overflow-x: auto; /* Mobilde taşarsa kaydır */
+  padding-bottom: 20px;
+}
+
+.master-calendar-grid {
+  display: grid;
+  /* 1 Zaman kolonu + 7 Gün Kolonu */
+  grid-template-columns: 100px repeat(7, minmax(160px, 1fr)); 
+  gap: 2px;
+  background-color: var(--ai-mid); /* Izgara çizgileri rengi */
+  border: 1px solid var(--ai-mid);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Başlık ve Zaman Hücreleri */
+.calendar-header-cell, .calendar-time-cell {
+  background-color: rgba(13, 74, 107, 0.8);
+  color: var(--ai-cyan);
+  font-weight: bold;
+  padding: 12px 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+}
+
+.day-header {
+  background-color: rgba(3, 201, 248, 0.15);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.calendar-time-cell {
+  color: #cbd5e1;
+  font-size: 0.8em;
+  border-right: 1px solid var(--ai-mid);
+}
+
+/* İçerik Hücreleri */
+.calendar-cell {
+  background-color: var(--ai-dark);
+  min-height: 80px; /* Her slotun minimum yüksekliği */
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.calendar-cell:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Dolu Hücre (İçinde ders varsa) */
+.calendar-cell.filled {
+  background-color: rgba(3, 201, 248, 0.03);
+}
+
+/* Çakışma Durumu (Aynı saatte birden fazla ders) */
+.calendar-cell.conflict {
+  background-color: rgba(239, 68, 68, 0.08); /* Hafif kırmızımsı arka plan */
+  border: 1px dashed rgba(239, 68, 68, 0.3);
+}
+
+/* Ders Kartı (Hücre içindeki kutucuk) */
+.calendar-item {
+  background-color: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--ai-mid);
+  border-left: 3px solid var(--ai-cyan);
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.calendar-cell.conflict .calendar-item {
+  border-left-color: #ef4444; /* Çakışmada sol çizgi kırmızı */
+}
+
+.cal-course-code {
+  color: var(--ai-cyan);
+  font-weight: bold;
+  font-size: 0.9em;
+  margin-bottom: 2px;
+}
+
+.cal-course-name {
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+
+.cal-teacher {
+  color: #cbd5e1;
+  font-size: 0.85em;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cal-teacher::before {
+  content: "👤";
+  font-size: 0.8em;
+  opacity: 0.7;
+}

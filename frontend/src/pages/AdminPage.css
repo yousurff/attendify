@@ -1,0 +1,78 @@
+/* frontend/src/pages/AdminPage.css */
+:root {
+  --sidebar-width-open: 260px;
+  --sidebar-width-closed: 70px; /* İnce şerit genişliği */
+}
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--ai-darkest); /* Koyu Lacivert Arka Plan */
+  color: #fff;
+}
+
+.admin-main {
+  flex: 1;
+  padding: 32px;
+  overflow-x: hidden;
+  background-color: var(--ai-darkest); /* İçerik zemini koyu */
+  transition: margin-left 0.3s ease; /* Yumuşak geçiş */
+}
+
+/* Menü AÇIK iken içerik sağa kayar */
+.admin-main.sidebar-open {
+  margin-left: var(--sidebar-width-open);
+}
+
+/* Menü KAPALI iken içerik sola yanaşır (ince şerit kadar boşluk) */
+.admin-main.sidebar-closed {
+  margin-left: var(--sidebar-width-closed);
+}
+
+/* Mobilde durum farklılaşabilir */
+@media (max-width: 768px) {
+  .admin-main.sidebar-open,
+  .admin-main.sidebar-closed {
+    margin-left: 0; /* Mobilde üstüne biner, itmez */
+  }
+}
+
+/* Action Bar Tasarımı - KOYU TEMA GÜNCELLEMESİ */
+.page-actions {
+  display: flex;
+  justify-content: space-between; /* Biri sağa biri sola yaslansın */
+  align-items: center;
+  background-color: var(--ai-dark); /* Beyaz yerine Koyu Kart Rengi */
+  padding: 16px 24px;
+  border-radius: 12px; /* Köşeleri yuvarlat */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Derin gölge */
+  margin-top: 32px;  /* Başlıktan uzaklaşması için */
+  margin-bottom: 24px; /* Tablo ile mesafe */
+  border: 1px solid var(--ai-mid); /* Neon Kenarlık */
+}
+
+/* Sadece tek buton varsa (Class sayfası gibi) sola yasla */
+.page-actions.single {
+  justify-content: flex-start;
+}
+
+/* Butonların içindeki ikon ve yazı hizası */
+.page-actions button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Mobilde alt alta geçsin */
+@media (max-width: 640px) {
+  .page-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .page-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}

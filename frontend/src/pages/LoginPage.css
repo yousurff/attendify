@@ -1,0 +1,92 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Arka planı projenin ana koyu rengine uygun gradient yapıyoruz */
+  background: linear-gradient(135deg, var(--ai-darkest) 0%, var(--ai-dark) 100%);
+  padding: 20px;
+}
+
+.login-card {
+  /* Kutunun rengini Beyaz yerine Koyu Lacivert yapıyoruz */
+  background-color: var(--ai-dark);
+  /* Neon kenarlık ekliyoruz */
+  border: 1px solid var(--ai-mid);
+  border-radius: 20px;
+  padding: 48px;
+  width: 100%;
+  max-width: 450px;
+  /* Gölgeye hafif mavi ton katıyoruz */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.5s ease;
+}
+
+.login-title {
+  font-size: 42px;
+  font-weight: 800;
+  text-align: center;
+  /* Başlık rengini Neon Cyan yapıyoruz */
+  color: var(--ai-cyan);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 10px rgba(3, 201, 248, 0.3);
+}
+
+.login-subtitle {
+  text-align: center;
+  /* Alt başlık rengini açık mavi/gri yapıyoruz */
+  color: #cbd5e1;
+  font-size: 14px;
+  margin-bottom: 40px;
+  font-weight: 500;
+}
+
+.login-form {
+  margin-top: 32px;
+}
+
+/* Hata mesajı kutusu */
+.login-error {
+  background-color: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  border-left: 4px solid #ff4d4d;
+  border: 1px solid #ff4d4d;
+}
+
+.login-button {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  margin-top: 24px;
+  font-weight: 600;
+  /* Buton zaten global.css'teki btn-primary özelliklerini alacak */
+}
+
+.login-footer {
+  margin-top: 32px;
+  padding-top: 24px;
+  /* Çizgi rengini koyu temaya uyduruyoruz */
+  border-top: 1px solid var(--ai-mid);
+  text-align: center;
+}
+
+.login-footer p {
+  font-size: 12px;
+  /* Footer yazısını okunabilir açık gri yapıyoruz */
+  color: #94a3b8;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 32px 24px;
+  }
+
+  .login-title {
+    font-size: 32px;
+  }
+}
