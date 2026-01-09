@@ -1,4 +1,3 @@
-// frontend/src/pages/AdminPage.jsx
 import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from '../components/common/Sidebar';
@@ -6,6 +5,7 @@ import AdminHome from '../components/admin/AdminHome';
 import AdminTeacher from '../components/admin/AdminTeacher';
 import AdminStudent from '../components/admin/AdminStudent';
 import AdminClass from '../components/admin/AdminClass';
+import AdminExam from '../components/admin/AdminExam'; // <--- YENİ IMPORT
 import AdminExport from '../components/admin/AdminExport';
 import AdminAttendance from '../components/admin/AdminAttendance';
 import AdminSettings from '../components/admin/AdminSettings';
@@ -32,6 +32,7 @@ const AdminPage = () => {
           <Route path="/teachers" element={<AdminTeacher />} />
           <Route path="/students" element={<AdminStudent />} />
           <Route path="/classes" element={<AdminClass />} />
+          <Route path="/exams" element={<AdminExam />} /> {/* <--- YENİ ROTA */}
           <Route path="/export" element={<AdminExport />} />
           <Route path="/attendance" element={<AdminAttendance />} />
           <Route path="/settings" element={<AdminSettings />} />

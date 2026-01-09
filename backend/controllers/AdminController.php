@@ -5,6 +5,9 @@ require_once __DIR__ . '/../models/Student.php';
 require_once __DIR__ . '/../models/Class.php';
 require_once __DIR__ . '/../models/Attendance.php';
 require_once __DIR__ . '/../models/Teacher.php'; 
+// Sınav Modeli Eklendi (Controller yerine Model kullanıyoruz)
+require_once __DIR__ . '/../models/Exam.php'; 
+
 require_once __DIR__ . '/../utils/Response.php';
 require_once __DIR__ . '/../utils/Validator.php';
 require_once __DIR__ . '/../middleware/auth.php';
@@ -16,6 +19,7 @@ class AdminController {
     private $classModel;
     private $attendanceModel;
     private $teacherModel;
+    private $examModel; // Exam Model Tanımlandı
 
     public function __construct() {
         $database = new Database();
@@ -25,6 +29,11 @@ class AdminController {
         $this->classModel = new ClassModel($this->db);
         $this->attendanceModel = new Attendance($this->db);
         $this->teacherModel = new Teacher($this->db);
+        $this->examModel = new Exam($this->db); // Exam Model Başlatıldı
+    }
+
+    public function getDb() {
+        return $this->db;
     }
 
     private function boolQuery($key, $default = true) {
@@ -59,7 +68,6 @@ class AdminController {
         $stmt->execute();
         $stats = $stmt->fetch();
 
-        // Varsayılan: Sadece okunmamışlar
         $feedbackQuery = "SELECT f.*, u.full_name as teacher_name, u.email as teacher_email
                           FROM feedbacks f
                           INNER JOIN users u ON f.teacher_id = u.id
@@ -205,7 +213,6 @@ class AdminController {
             $studentId = $this->studentModel->create($data);
             if (!$studentId) throw new Exception("Öğrenci veritabanına eklenemedi.");
 
-            // Mac/XAMPP uyumlu yol
             $targetBase = $_SERVER['DOCUMENT_ROOT'] . '/attendify/frontend/public/uploads/students/';
             $targetDir = $targetBase . $studentId . '/';
 
@@ -309,12 +316,10 @@ class AdminController {
         else Response::serverError("Failed");
     }
     
-    // --- DÜZELTİLEN FONKSİYON BURASI ---
     public function updateClass($id) {
          AuthMiddleware::requireAdmin();
          $data = json_decode(file_get_contents("php://input"), true);
          
-         // Modeldeki update fonksiyonunu çağırıyoruz
          if ($this->classModel->update($id, $data)) {
              Response::success(null, "Class updated successfully");
          } else {
@@ -369,6 +374,90 @@ class AdminController {
         elseif ($type == 'classes') $data = $this->classModel->getAll(false);
         else $data = $this->studentModel->getAll(false);
         Response::success($data);
+    }
+
+    // ==========================================
+    // EXAM MANAGEMENT (DÜZELTİLDİ: DIRECT IMPLEMENTATION)
+    // ==========================================
+
+    public function createExam() {
+        AuthMiddleware::requireAdmin();
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        // Validation
+        if (empty($data['class_id']) || empty($data['exam_name']) || empty($data['exam_date'])) {
+            Response::error("Eksik bilgi", 400);
+        }
+
+        try {
+            $this->db->beginTransaction();
+
+            // 1. Sınav Kaydını Oluştur
+            $examId = $this->examModel->create(
+                $data['class_id'], 
+                $data['exam_name'], 
+                $data['classroom'] ?? 'Derslik-1', 
+                $data['exam_date'], 
+                $data['exam_time'] ?? '00:00'
+            );
+
+            if (!$examId) throw new Exception("Sınav oluşturulamadı.");
+
+            // 2. Oturma Düzeni Oluştur (Random Dağıtım)
+            // Sınıfın öğrencilerini çek
+            $stmt = $this->db->prepare("SELECT student_id FROM student_classes WHERE class_id = :cid");
+            $stmt->execute([':cid' => $data['class_id']]);
+            $students = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            if (!empty($students)) {
+                shuffle($students); // Rastgele karıştır
+                
+                $seating = [];
+                $seatNum = 1;
+                foreach ($students as $studentId) {
+                    if ($seatNum > 60) break; // Sınıf kapasitesi
+                    $seating[] = [
+                        'student_id' => $studentId,
+                        'seat_number' => $seatNum++
+                    ];
+                }
+                
+                $this->examModel->saveSeating($examId, $seating);
+            }
+
+            $this->db->commit();
+            Response::success(['id' => $examId], "Sınav başarıyla oluşturuldu");
+
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            Response::serverError("Hata: " . $e->getMessage());
+        }
+    }
+
+    public function getExams() {
+        AuthMiddleware::requireAdmin();
+        $showPast = isset($_GET['past']) && $_GET['past'] === 'true';
+        $exams = $this->examModel->getAll($showPast);
+        Response::success($exams);
+    }
+
+    public function deleteExam($id) {
+        AuthMiddleware::requireAdmin();
+        if ($this->examModel->delete($id)) {
+            Response::success(null, "Sınav silindi");
+        } else {
+            Response::serverError("Silinemedi");
+        }
+    }
+
+    public function getExamDetails($id) {
+        AuthMiddleware::requireAdmin();
+        $details = $this->examModel->getDetails($id);
+        if ($details) {
+            Response::success($details);
+        } else {
+            Response::notFound("Sınav bulunamadı");
+        }
     }
 }
 
@@ -450,6 +539,27 @@ try {
             elseif ($method === 'GET') $controller->getClasses();
             elseif ($method === 'PUT' && $id) $controller->updateClass($id);
             elseif ($method === 'DELETE' && $id) $controller->deleteClass($id);
+            break;
+
+        // --- DÜZELTİLEN: SINAV İŞLEMLERİ DOĞRUDAN BURADA ---
+        case 'exams':
+            if ($method === 'GET') {
+                $controller->getExams();
+            } elseif ($method === 'POST') {
+                $controller->createExam();
+            } elseif ($method === 'DELETE' && $id) {
+                $controller->deleteExam($id);
+            } else {
+                Response::notFound("Invalid exams request");
+            }
+            break;
+
+        case 'exam-details':
+            if ($method === 'GET' && $id) {
+                $controller->getExamDetails($id);
+            } else {
+                Response::error("Missing ID", 400);
+            }
             break;
 
         default:

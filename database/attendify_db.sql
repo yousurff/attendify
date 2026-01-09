@@ -145,3 +145,27 @@ CREATE TABLE `system_stats` (
 
 INSERT INTO `users` (`username`, `password`, `full_name`, `email`, `role`, `is_active`) VALUES
 ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'System Admin', 'admin@attendify.com', 'admin', 1);
+
+-- Sınavlar Tablosu
+CREATE TABLE `exams` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `class_id` int(11) NOT NULL,
+  `exam_name` varchar(200) NOT NULL, -- Örn: Vize, Final
+  `classroom` varchar(50) NOT NULL, -- Örn: Derslik-1
+  `exam_date` date NOT NULL,
+  `exam_time` time NOT NULL,
+  `created_at` timestamp DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`class_id`) REFERENCES `classes`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Oturma Düzeni Tablosu (Hangi öğrenci hangi sırada)
+CREATE TABLE `exam_seating` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `exam_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `seat_number` int(11) NOT NULL, -- 1'den 60'a kadar koltuk numarası
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`exam_id`) REFERENCES `exams`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`student_id`) REFERENCES `students`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
